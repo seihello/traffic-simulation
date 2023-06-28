@@ -1,5 +1,5 @@
-import $ from 'jquery';
-
 $(() => {
+    $("#app").text("aaa");
     
 })
+
