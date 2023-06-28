@@ -7,12 +7,15 @@ body {
 }
 
 #app {
+  display: grid;
+  place-items: center;
+}
+#app canvas {
   width: 1200px;
   height: 800px;
   border: 2px solid gray;
-  margin: 0 auto;
   position: relative;
 }
-#app > * {
+#app canvas > * {
   position: absolute;
 }/*# sourceMappingURL=style.css.map */
