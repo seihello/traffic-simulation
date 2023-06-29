@@ -1,5 +1,5 @@
 $(() => {
-    const canvas = $("#app").children("canvas")[0].getContext("2d")!;
+    const canvas: CanvasRenderingContext2D = $("#app").children("canvas")[0].getContext("2d")!;
     canvas.beginPath()
     canvas.moveTo(50, 50)
     canvas.lineTo(400, 200)
