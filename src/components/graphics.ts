@@ -3,7 +3,7 @@ interface Point {
     y: number
 }
 
-abstract class GraphicElement {
+export abstract class GraphicElement {
     startPoint: Point
     endPoint: Point
     length: number = 0
@@ -17,7 +17,7 @@ abstract class GraphicElement {
     // abstract getPoint(distance: number): Point | false
 }
 
-class Line extends GraphicElement {
+export class Line extends GraphicElement {
 
     constructor(startPoint: Point, endPoint: Point) {
         super(startPoint, endPoint)
