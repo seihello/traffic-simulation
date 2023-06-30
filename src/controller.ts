@@ -19,11 +19,19 @@ $(() => {
     edge.graphicElements = [...graphicElements]
     const graph = new Graph([], [edge])
     
-    for(const graphicElement of graphicElements) {
-        graphicElement.draw(context)
-    }
+
     
     const vehicle = new Vehicle(1, {edgeID: 1, distance: 100}, graph)
     vehicle.draw(context)
+
+    setInterval(() => {
+        context.clearRect(0, 0, 1200, 800)
+        vehicle.move()
+
+        for(const graphicElement of graphicElements) {
+            graphicElement.draw(context)
+        }
+        vehicle.draw(context)
+    }, 100)
 })
 

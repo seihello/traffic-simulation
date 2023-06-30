@@ -35,5 +35,7 @@ export class Vehicle {
     }
 
     move(): void {
+        console.log("move")
+        this.position.distance += 10
     }
 }
