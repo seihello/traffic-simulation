@@ -1,4 +1,4 @@
-interface Point {
+export interface Point {
     x: number,
     y: number
 }
@@ -14,7 +14,7 @@ export abstract class GraphicElement {
     }
 
     abstract draw(context: CanvasRenderingContext2D): void
-    // abstract getPoint(distance: number): Point | false
+    abstract getPoint(distance: number): Point | false
 }
 
 export class Line extends GraphicElement {
@@ -32,9 +32,23 @@ export class Line extends GraphicElement {
         context.stroke()
     }
 
-    // getPoint(distance: number): Point | false {
-    //     return false;
-    // }
+    getPoint(distance: number): Point | false {
+        if(distance === 0) {
+            return Object.assign({}, this.startPoint)
+        } else if(distance === this.length) {
+            return Object.assign({}, this.endPoint)
+        } else {
+            const ratio = distance / this.length
+            if(ratio <= 1) {
+                return {
+                    x: this.startPoint.x + ((this.endPoint.x - this.startPoint.x) * ratio),
+                    y: this.startPoint.y + ((this.endPoint.y - this.startPoint.y) * ratio)
+                }
+            } else {
+                return false;
+            }
+        }
+    }
 }
 
 export enum ArcAngle {
@@ -77,5 +91,10 @@ export class Arc extends GraphicElement {
         }
         context.arc(this.center.x, this.center.y, this.radius, startAngle, endAngle)
         context.stroke()
+    }
+
+    getPoint(distance: number): Point | false {
+        console.log(distance)
+        return false
     }
 }

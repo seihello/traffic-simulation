@@ -1,7 +1,13 @@
+import { GraphicElement, Point } from './graphics.js';
 export class Graph {
     nodes: Node[] = []
     edges: Edge[] = []
-    constructor() {
+    constructor(nodes: Node[], edges: Edge[]) {
+        this.nodes = nodes
+        this.edges = edges
+    }
+    getEdge(edgeID: number): Edge {
+        return this.edges[edgeID-1]
     }
 }
 
@@ -18,7 +24,25 @@ export class Edge {
     id: number
     prevNode?: Node
     nextNode?: Node
+    graphicElements: GraphicElement[] = []
     constructor(id: number) {
         this.id = id
+    }
+
+    getPoint(distance: number): Point | false {
+        let sumLength = 0
+        let graphicElementDistance = 0
+
+        for(const graphicElement of this.graphicElements) {
+            sumLength += graphicElement.length
+            if(sumLength >= distance) {
+                let currentGraphicElement: GraphicElement = graphicElement
+                graphicElementDistance = distance - (sumLength - currentGraphicElement.length)
+
+                return currentGraphicElement.getPoint(graphicElementDistance)
+            }
+        }
+
+        return false
     }
 }
