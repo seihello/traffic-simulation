@@ -11,6 +11,7 @@ export class Vehicle {
     position: Position
     speed: number
     path: number[]  // list of Edge ID
+    pathIndex: number
 
     static SIZE: number = 20
     static LINE_WIDTH: number = 2
@@ -22,6 +23,7 @@ export class Vehicle {
         this.position = initialPosition
         this.speed = 10
         this.path = []
+        this.pathIndex = -1
     }
 
     draw(context: CanvasRenderingContext2D): void {
@@ -35,6 +37,17 @@ export class Vehicle {
             context.fill()
             context.stroke()
         }
+    }
+
+    setPath(path: number[]) : boolean {
+        if(path.length === 0) {
+            return false
+        }
+        if(path[0] === this.position.edgeID) {
+            return false
+        }
+        this.path = path
+        return true
     }
 
     move(): void {
