@@ -18,7 +18,7 @@ export class Vehicle {
         this.id = id
         this.graph = graph
         this.position = initialPosition
-        this.speed = 0
+        this.speed = 10
     }
 
     draw(context: CanvasRenderingContext2D): void {
@@ -35,7 +35,11 @@ export class Vehicle {
     }
 
     move(): void {
-        console.log("move")
-        this.position.distance += 10
+        this.position.distance += this.speed
+        
+        // const currentEdge = this.graph.getEdge(this.position.edgeID)
+        // if(currentEdge) {
+
+        // }
     }
 }
