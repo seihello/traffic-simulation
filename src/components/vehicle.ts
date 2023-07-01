@@ -10,6 +10,8 @@ export class Vehicle {
     graph: Graph
     position: Position
     speed: number
+    path: number[]  // list of Edge ID
+
     static SIZE: number = 20
     static LINE_WIDTH: number = 2
     static COLOR: string = "#21f400"
@@ -19,6 +21,7 @@ export class Vehicle {
         this.graph = graph
         this.position = initialPosition
         this.speed = 10
+        this.path = []
     }
 
     draw(context: CanvasRenderingContext2D): void {
