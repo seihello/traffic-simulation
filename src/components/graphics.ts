@@ -70,7 +70,6 @@ export class Arc extends GraphicElement {
         this.length = Math.floor(diameter * 3.14 / 2)
         this.radius = Math.floor(diameter / 2)
         this.center = {x: Math.floor(startPoint.x + endPoint.x) / 2, y: Math.floor(startPoint.y + endPoint.y) / 2}
-        console.log(`length = ${this.length}`)
     }
 
     draw(context: CanvasRenderingContext2D): void {
@@ -79,12 +78,10 @@ export class Arc extends GraphicElement {
         let startAngle = 0, endAngle = 0
         switch(this.angle) {
             case ArcAngle.Right:
-                console.log("right")
                 startAngle = 1.5 * Math.PI
                 endAngle = 0.5  * Math.PI
                 break
             case ArcAngle.Left:
-                console.log("left")
                 startAngle = 0.5 * Math.PI
                 endAngle = 1.5  * Math.PI
                 break

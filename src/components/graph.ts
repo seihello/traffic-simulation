@@ -2,12 +2,20 @@ import { GraphicElement, Point } from './graphics.js';
 export class Graph {
     nodes: Node[] = []
     edges: Edge[] = []
+
     constructor(nodes: Node[], edges: Edge[]) {
         this.nodes = nodes
         this.edges = edges
     }
+
     getEdge(edgeID: number): Edge {
         return this.edges[edgeID-1]
+    }
+
+    draw(context: CanvasRenderingContext2D): void {
+        for(const edge of this.edges) {
+            edge.draw(context)
+        }
     }
 }
 
@@ -44,5 +52,11 @@ export class Edge {
         }
 
         return false
+    }
+
+    draw(context: CanvasRenderingContext2D): void {
+        for(const graphicElement of this.graphicElements) {
+            graphicElement.draw(context)
+        }
     }
 }
