@@ -1,4 +1,4 @@
-import { Line/*, Arc, ArcAngle */} from './components/graphics.js'
+import { Line/*, Arc, ArcAngle */, GraphicElement} from './components/graphics.js'
 import { Graph, Node, Edge } from './components/graph.js'
 import { Vehicle } from './components/vehicle.js'
 
@@ -8,18 +8,14 @@ $(() => {
     const node1 = new Node(1)
     const node2 = new Node(2)
 
-    const edge1 = new Edge(1, node2, node1, [
-        new Line({x: 600, y: 400}, {x: 200, y: 400}),
-        new Line({x: 200, y: 400}, {x: 200, y: 100}),
-        new Line({x: 200, y: 100}, {x: 600, y: 100})
+    const edge1 = makeEdge(1, node2, node1, [
+        [600, 400], [200, 400], [200, 100], [600, 100]
     ])
-    const edge2 = new Edge(2, node1, node2, [
-        new Line({x: 600, y: 100}, {x: 600, y: 400})
+    const edge2 = makeEdge(2, node1, node2, [
+        [600, 100], [600, 400]
     ])
-    const edge3 = new Edge(3, node1, node2, [
-        new Line({x: 600, y: 100}, {x: 1000, y: 100}),
-        new Line({x: 1000, y: 100}, {x: 1000, y: 400}),
-        new Line({x: 1000, y: 400}, {x: 600, y: 400})
+    const edge3 = makeEdge(3, node1, node2, [
+        [600, 100], [1000, 100], [1000, 400], [600, 400]
     ])
 
     node1.setEdges([edge1], [edge2, edge3])
@@ -40,4 +36,13 @@ $(() => {
         vehicle.draw(context)
     }, 100)
 })
+
+function makeEdge(id: number, prevNode: Node, nextNode: Node, points: number[][]): Edge {
+    const graphicElements: GraphicElement[] = []
+    for(let i = 0; i < points.length - 1; i++) {
+        graphicElements.push(new Line({x: points[i][0], y: points[i][1]}, {x: points[i+1][0], y: points[i+1][1]}))
+    }
+    const edge = new Edge(id, prevNode, nextNode, graphicElements)
+    return edge
+}
 
