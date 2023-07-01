@@ -22,7 +22,6 @@ export class Line extends GraphicElement {
     constructor(startPoint: Point, endPoint: Point) {
         super(startPoint, endPoint)
         this.length = Math.floor(Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2)))
-        console.log(`length = ${this.length}`)
     }
 
     draw(context: CanvasRenderingContext2D): void {
@@ -90,8 +89,7 @@ export class Arc extends GraphicElement {
         context.stroke()
     }
 
-    getPoint(distance: number): Point | false {
-        console.log(distance)
+    getPoint(/*distance: number*/): Point | false {
         return false
     }
 }

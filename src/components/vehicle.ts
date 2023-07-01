@@ -43,7 +43,7 @@ export class Vehicle {
         if(path.length === 0) {
             return false
         }
-        if(path[0] === this.position.edgeID) {
+        if(path[0] !== this.position.edgeID) {
             return false
         }
         this.path = path
@@ -52,13 +52,12 @@ export class Vehicle {
     }
 
     move(): boolean {
-        if(this.position.edgeID !== this.path[this.pathIndex]) {
+        if(this.position.edgeID !== this.path[this.pathIndex]) {           
             return false
         }
         const currentEdge = this.graph.getEdge(this.position.edgeID)
         this.position.distance += this.speed
         if(this.position.distance > currentEdge.length) {
-            
             if(this.canEnterNextEdge(currentEdge)) {
                 this.enterNextEdge(currentEdge)
             }
@@ -68,11 +67,13 @@ export class Vehicle {
     }
 
     canEnterNextEdge(currentEdge: Edge): boolean {
-        if(this.pathIndex + 1 > this.path.length) {
+        if(this.pathIndex + 1 > this.path.length) {            
             return false
         }
+        console.log(currentEdge.nextNode.nextEdges);
+
         for(const nextEdge of currentEdge.nextNode.nextEdges) {
-            if(nextEdge.id === this.path[this.pathIndex]) {
+            if(nextEdge.id === this.path[this.pathIndex + 1]) {
                 return true
             }
         }

@@ -28,7 +28,9 @@ $(() => {
     const graph = new Graph([node1, node2], [edge1, edge2, edge3])
     
     const vehicle = new Vehicle(1, {edgeID: 1, distance: 100}, graph)
-    vehicle.setPath([1, 2, 1, 3, 1]);
+    if(!vehicle.setPath([1, 2, 1, 3, 1])) {
+        console.log("setPath failed")
+    }
 
     setInterval(() => {
         context.clearRect(0, 0, 1200, 800)
