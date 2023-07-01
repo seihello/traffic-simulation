@@ -70,7 +70,6 @@ export class Vehicle {
         if(this.pathIndex + 1 > this.path.length) {            
             return false
         }
-        console.log(currentEdge.nextNode.nextEdges);
 
         for(const nextEdge of currentEdge.nextNode.nextEdges) {
             if(nextEdge.id === this.path[this.pathIndex + 1]) {
