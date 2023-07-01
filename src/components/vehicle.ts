@@ -1,4 +1,4 @@
-import { Graph } from './graph.js';
+import { Graph, Edge } from './graph.js';
 
 export interface Position {
     edgeID: number
@@ -21,7 +21,7 @@ export class Vehicle {
         this.id = id
         this.graph = graph
         this.position = initialPosition
-        this.speed = 10
+        this.speed = 13
         this.path = []
         this.pathIndex = -1
     }
@@ -47,15 +47,43 @@ export class Vehicle {
             return false
         }
         this.path = path
+        this.pathIndex = 0
         return true
     }
 
-    move(): void {
+    move(): boolean {
+        if(this.position.edgeID !== this.path[this.pathIndex]) {
+            return false
+        }
+        const currentEdge = this.graph.getEdge(this.position.edgeID)
         this.position.distance += this.speed
-        
-        // const currentEdge = this.graph.getEdge(this.position.edgeID)
-        // if(currentEdge) {
+        if(this.position.distance > currentEdge.length) {
+            
+            if(this.canEnterNextEdge(currentEdge)) {
+                this.enterNextEdge(currentEdge)
+            }
+        }
 
-        // }
+        return true
     }
+
+    canEnterNextEdge(currentEdge: Edge): boolean {
+        if(this.pathIndex + 1 > this.path.length) {
+            return false
+        }
+        for(const nextEdge of currentEdge.nextNode.nextEdges) {
+            if(nextEdge.id === this.path[this.pathIndex]) {
+                return true
+            }
+        }
+        return false
+    }
+
+    enterNextEdge(currentEdge: Edge): void {
+        const nextEdgeDistance = this.position.distance - currentEdge.length
+        this.pathIndex++
+        this.position.edgeID = this.path[this.pathIndex]
+        this.position.distance = nextEdgeDistance
+    }
+
 }

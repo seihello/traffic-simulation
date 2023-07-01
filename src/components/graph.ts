@@ -26,15 +26,29 @@ export class Node {
     constructor(id: number) {
         this.id = id
     }
+
+    setEdges(prevEdges: Edge[], nextEdges: Edge[]) {
+        this.prevEdges = prevEdges
+        this.nextEdges = nextEdges
+    }
 }
 
 export class Edge {
     id: number
-    prevNode?: Node
-    nextNode?: Node
+    length: number
+    prevNode: Node
+    nextNode: Node
     graphicElements: GraphicElement[] = []
-    constructor(id: number) {
+
+    constructor(id: number, prevNode: Node, nextNode: Node, graphicElements: GraphicElement[]) {
         this.id = id
+        this.prevNode = prevNode
+        this.nextNode = nextNode
+        this.graphicElements = graphicElements
+        this.length = 0
+        for(const graphicElement of this.graphicElements) {
+            this.length += graphicElement.length
+        }
     }
 
     getPoint(distance: number): Point | false {
