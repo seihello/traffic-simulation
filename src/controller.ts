@@ -22,7 +22,6 @@ $(() => {
 })
 
 
-
 class GraphBuilder {
     nodes: Node[] = []
     edges: Edge[] = []
@@ -50,10 +49,7 @@ class GraphBuilder {
         ])
         this.edges = [edge1, edge2, edge3, edge4, edge5, edge6]
 
-        for(const edge of this.edges) {
-            edge.prevNode.addNextEdge(edge)
-            edge.nextNode.addPrevEdge(edge)
-        }
+        this.bindEdge()
 
         return new Graph(this.nodes, this.edges)
     }
@@ -73,5 +69,12 @@ class GraphBuilder {
         }
         const edge = new Edge(id, this.nodes[prevNodeID-1], this.nodes[nextNodeID-1], graphicElements)
         return edge
+    }
+
+    bindEdge() {
+        for(const edge of this.edges) {
+            edge.prevNode.addNextEdge(edge)
+            edge.nextNode.addPrevEdge(edge)
+        }
     }
 }
