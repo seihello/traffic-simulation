@@ -27,9 +27,17 @@ export class Node {
         this.id = id
     }
 
-    setEdges(prevEdges: Edge[], nextEdges: Edge[]) {
-        this.prevEdges = prevEdges
-        this.nextEdges = nextEdges
+    // setEdges(prevEdges: Edge[], nextEdges: Edge[]) {
+    //     this.prevEdges = prevEdges
+    //     this.nextEdges = nextEdges
+    // }
+
+    addPrevEdge(prevEdge: Edge): void {
+        this.prevEdges.push(prevEdge)
+    }
+
+    addNextEdge(nextEdge: Edge): void {
+        this.nextEdges.push(nextEdge)
     }
 }
 
