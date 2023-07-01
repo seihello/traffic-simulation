@@ -56,11 +56,15 @@ export class Vehicle {
             return false
         }
         const currentEdge = this.graph.getEdge(this.position.edgeID)
-        this.position.distance += this.speed
-        if(this.position.distance > currentEdge.length) {
+        if(this.position.distance + this.speed > currentEdge.length) {
             if(this.canEnterNextEdge(currentEdge)) {
                 this.enterNextEdge(currentEdge)
+            } else {
+                this.pathIndex = -1
+                this.path = []
             }
+        } else {
+            this.position.distance += this.speed
         }
 
         return true
@@ -80,7 +84,7 @@ export class Vehicle {
     }
 
     enterNextEdge(currentEdge: Edge): void {
-        const nextEdgeDistance = this.position.distance - currentEdge.length
+        const nextEdgeDistance = this.position.distance + this.speed - currentEdge.length
         this.pathIndex++
         this.position.edgeID = this.path[this.pathIndex]
         this.position.distance = nextEdgeDistance
