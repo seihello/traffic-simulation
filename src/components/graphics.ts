@@ -4,13 +4,11 @@ export interface Point {
 }
 
 export abstract class GraphicElement {
-    type: GraphicType
     startPoint: Point
     endPoint: Point
     length: number = 0
 
-    constructor(type: GraphicType, startPoint: Point, endPoint: Point) {
-        this.type = type
+    constructor(startPoint: Point, endPoint: Point) {
         this.startPoint = startPoint
         this.endPoint = endPoint
     }
@@ -22,7 +20,7 @@ export abstract class GraphicElement {
 export class Line extends GraphicElement {
 
     constructor(startPoint: Point, endPoint: Point) {
-        super(GraphicType.Line, startPoint, endPoint)
+        super(startPoint, endPoint)
         this.length = Math.floor(Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2)))
     }
 
@@ -60,37 +58,80 @@ export enum GraphicType {
     DownArc
 }
 
-export class Arc extends GraphicElement {
+export abstract class Arc extends GraphicElement {
     center: Point
     radius: number
 
-    constructor(type: GraphicType, startPoint: Point, endPoint: Point) {
-        super(type, startPoint, endPoint)
+    constructor(startPoint: Point, endPoint: Point) {
+        super(startPoint, endPoint)
         const diameter = Math.floor(Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2)))
         this.length = Math.floor(diameter * 3.14 / 2)
         this.radius = Math.floor(diameter / 2)
         this.center = {x: Math.floor(startPoint.x + endPoint.x) / 2, y: Math.floor(startPoint.y + endPoint.y) / 2}
     }
+}
+
+export class LeftArc extends Arc {
+    constructor(startPoint: Point, endPoint: Point) {
+        super(startPoint, endPoint)
+    }
 
     draw(context: CanvasRenderingContext2D): void {
+        const startAngle = 0.5 * Math.PI
+        const endAngle = 1.5  * Math.PI
         context.beginPath()
-
-        let startAngle = 0, endAngle = 0
-        switch(this.type) {
-            case GraphicType.RightArc:
-                startAngle = 1.5 * Math.PI
-                endAngle = 0.5  * Math.PI
-                break
-            case GraphicType.LeftArc:
-                startAngle = 0.5 * Math.PI
-                endAngle = 1.5  * Math.PI
-                break
-        }
         context.arc(this.center.x, this.center.y, this.radius, startAngle, endAngle)
         context.stroke()
     }
 
-    getPoint(/*distance: number*/): Point | false {
-        return false
+    getPoint(distance: number): Point | false {
+        if(distance === 0) {
+            return Object.assign({}, this.startPoint)
+        } else if(distance === this.length) {
+            return Object.assign({}, this.endPoint)
+        } else {
+            const ratio = distance / this.length
+            if(ratio <= 1) {
+                return {
+                    x: this.center.x + this.radius * Math.cos(Math.PI * ratio + Math.PI / 2),
+                    y: this.center.y + this.radius * Math.sin(Math.PI * ratio + Math.PI / 2)
+                }
+            } else {
+                return false;
+            }
+        }
     }
 }
+
+export class RightArc extends Arc {
+    constructor(startPoint: Point, endPoint: Point) {
+        super(startPoint, endPoint)
+    }
+
+    draw(context: CanvasRenderingContext2D): void {
+        const startAngle = 1.5 * Math.PI
+        const endAngle = 0.5  * Math.PI
+        context.beginPath()
+        context.arc(this.center.x, this.center.y, this.radius, startAngle, endAngle)
+        context.stroke()
+    }
+
+    getPoint(distance: number): Point | false {
+        if(distance === 0) {
+            return Object.assign({}, this.startPoint)
+        } else if(distance === this.length) {
+            return Object.assign({}, this.endPoint)
+        } else {
+            const ratio = distance / this.length
+            if(ratio <= 1) {
+                return {
+                    x: this.center.x + this.radius * Math.cos(Math.PI * ratio - Math.PI / 2),
+                    y: this.center.y + this.radius * Math.sin(Math.PI * ratio - Math.PI / 2)
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+}
+

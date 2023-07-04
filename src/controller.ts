@@ -1,4 +1,4 @@
-import { Line, Arc, /* ArcAngle */ GraphicElement, GraphicType } from './components/graphics.js'
+import { Line, RightArc, LeftArc, GraphicElement, GraphicType } from './components/graphics.js'
 import { Graph, Node, Edge } from './components/graph.js'
 import { Vehicle } from './components/vehicle.js'
 
@@ -79,9 +79,13 @@ class GraphBuilder {
                 case GraphicType.Line:
                     graphicElements.push(new Line({x: points[i][0], y: points[i][1]}, {x: points[i+1][0], y: points[i+1][1]}))
                     break
-                default:
-                    graphicElements.push(new Arc(points[i][2], {x: points[i][0], y: points[i][1]}, {x: points[i+1][0], y: points[i+1][1]}))
+                case GraphicType.RightArc:
+                    graphicElements.push(new RightArc({x: points[i][0], y: points[i][1]}, {x: points[i+1][0], y: points[i+1][1]}))
                     break
+                case GraphicType.LeftArc:
+                    graphicElements.push(new LeftArc({x: points[i][0], y: points[i][1]}, {x: points[i+1][0], y: points[i+1][1]}))
+                    break
+
             }
         }
         const edge = new Edge(id, this.nodes[prevNodeID-1], this.nodes[nextNodeID-1], graphicElements)
