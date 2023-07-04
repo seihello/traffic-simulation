@@ -4,11 +4,13 @@ export interface Point {
 }
 
 export abstract class GraphicElement {
+    type: GraphicType
     startPoint: Point
     endPoint: Point
     length: number = 0
 
-    constructor(startPoint: Point, endPoint: Point) {
+    constructor(type: GraphicType, startPoint: Point, endPoint: Point) {
+        this.type = type
         this.startPoint = startPoint
         this.endPoint = endPoint
     }
@@ -20,7 +22,7 @@ export abstract class GraphicElement {
 export class Line extends GraphicElement {
 
     constructor(startPoint: Point, endPoint: Point) {
-        super(startPoint, endPoint)
+        super(GraphicType.Line, startPoint, endPoint)
         this.length = Math.floor(Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2)))
     }
 
@@ -50,21 +52,20 @@ export class Line extends GraphicElement {
     }
 }
 
-export enum ArcAngle {
-    Left,
-    Right,
-    Up,
-    Down
+export enum GraphicType {
+    Line,
+    LeftArc,
+    RightArc,
+    UpArc,
+    DownArc
 }
 
 export class Arc extends GraphicElement {
     center: Point
     radius: number
-    angle: ArcAngle
 
-    constructor(startPoint: Point, endPoint: Point, angle: ArcAngle) {
-        super(startPoint, endPoint)
-        this.angle = angle
+    constructor(type: GraphicType, startPoint: Point, endPoint: Point) {
+        super(type, startPoint, endPoint)
         const diameter = Math.floor(Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2)))
         this.length = Math.floor(diameter * 3.14 / 2)
         this.radius = Math.floor(diameter / 2)
@@ -75,12 +76,12 @@ export class Arc extends GraphicElement {
         context.beginPath()
 
         let startAngle = 0, endAngle = 0
-        switch(this.angle) {
-            case ArcAngle.Right:
+        switch(this.type) {
+            case GraphicType.RightArc:
                 startAngle = 1.5 * Math.PI
                 endAngle = 0.5  * Math.PI
                 break
-            case ArcAngle.Left:
+            case GraphicType.LeftArc:
                 startAngle = 0.5 * Math.PI
                 endAngle = 1.5  * Math.PI
                 break

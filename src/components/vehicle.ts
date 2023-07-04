@@ -21,7 +21,7 @@ export class Vehicle {
         this.id = id
         this.graph = graph
         this.position = initialPosition
-        this.speed = 13
+        this.speed = 3
         this.path = []
         this.pathIndex = -1
     }
