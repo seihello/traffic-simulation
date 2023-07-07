@@ -1,20 +1,28 @@
 import { Line, RightArc, LeftArc, GraphicElement, GraphicType } from './components/graphics.js'
 import { Graph, Node, Edge } from './components/graph.js'
-import { Vehicle } from './components/vehicle.js'
+import { Vehicle, MoveResult } from './components/vehicle.js'
+
+
 
 $(() => {
     const context: CanvasRenderingContext2D = $("#app").children("canvas")[0].getContext("2d")!;
     
     const graph = new GraphBuilder().build()
     
-    const vehicle = new Vehicle(1, {edgeID: 1, distance: 100}, graph)
-    if(!vehicle.setPath([1, 2, 3, 4, 1, 6, 1, 2, 3, 5, 3, 4])) {
+    const vehicle = new Vehicle(1, {edgeID: 1, distance: 400}, graph)
+    const samplePath = [1, 2, 3, 4, 1, 6, 1, 2, 3, 5, 3, 4]
+    if(!vehicle.setPath(samplePath)) {
         console.log("setPath failed")
     }
 
     setInterval(() => {
         context.clearRect(0, 0, 1200, 800)
-        vehicle.move()
+        const moveResult = vehicle.move()
+        if(moveResult === MoveResult.CompletedPath) {
+            if(!vehicle.setPath([samplePath[samplePath.length - 1], ...samplePath])) {
+                console.log("setPath failed")
+            }
+        }
 
         graph.draw(context)
         vehicle.draw(context)

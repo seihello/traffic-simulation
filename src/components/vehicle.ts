@@ -1,5 +1,12 @@
 import { Graph, Edge } from './graph.js';
 
+export enum MoveResult {
+    Error,
+    Moving,
+    Transferred,
+    CompletedPath,
+}
+
 export interface Position {
     edgeID: number
     distance: number
@@ -51,23 +58,24 @@ export class Vehicle {
         return true
     }
 
-    move(): boolean {
+    move(): MoveResult {
         if(this.position.edgeID !== this.path[this.pathIndex]) {           
-            return false
+            return MoveResult.Error
         }
         const currentEdge = this.graph.getEdge(this.position.edgeID)
-        if(this.position.distance + this.speed > currentEdge.length) {
+        if(this.shouldTransferEdge(currentEdge.length)) {
             if(this.canEnterNextEdge(currentEdge)) {
-                this.enterNextEdge(currentEdge)
+                this.transferEdge(currentEdge)
+                return MoveResult.Transferred
             } else {
                 this.pathIndex = -1
                 this.path = []
+                return MoveResult.CompletedPath
             }
         } else {
             this.position.distance += this.speed
+            return MoveResult.Moving
         }
-
-        return true
     }
 
     canEnterNextEdge(currentEdge: Edge): boolean {
@@ -83,7 +91,11 @@ export class Vehicle {
         return false
     }
 
-    enterNextEdge(currentEdge: Edge): void {
+    shouldTransferEdge(currentEdgeLength: number): boolean {
+        return this.position.distance + this.speed > currentEdgeLength
+    }
+
+    transferEdge(currentEdge: Edge): void {
         const nextEdgeDistance = this.position.distance + this.speed - currentEdge.length
         this.pathIndex++
         this.position.edgeID = this.path[this.pathIndex]
