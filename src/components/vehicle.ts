@@ -20,7 +20,7 @@ export class Vehicle {
     path: number[]  // list of Edge ID
     pathIndex: number
 
-    static SIZE: number = 20
+    static SIZE: number = 24
     static LINE_WIDTH: number = 2
     static COLOR: string = "#21f400"
 

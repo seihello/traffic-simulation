@@ -10,7 +10,7 @@ body {
   display: grid;
   place-items: center;
   canvas {
-    border: 2px solid gray;
+    border: 2px solid rgb(143, 143, 143);
     position: relative;
 
     & > * {

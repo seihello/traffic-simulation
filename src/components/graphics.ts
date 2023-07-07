@@ -26,6 +26,8 @@ export class Line extends GraphicElement {
 
     draw(context: CanvasRenderingContext2D): void {
         context.beginPath()
+        context.lineWidth = 24
+        context.strokeStyle = "#8e8e8e"
         context.moveTo(this.startPoint.x, this.startPoint.y)
         context.lineTo(this.endPoint.x, this.endPoint.y)
         context.stroke()
